@@ -26,6 +26,10 @@ public:
     void CheckDataByID();   // find bus data by inputting bus id
     void CheckDataByDest(); // find bus data by inputting travel destination
     void AdminSystem();     // for admins
+    string CheckForDelete();
+    void DeleteData();
+    void UpdateData();
+    void 
     void UserSystem();      // for users (costumers)
     void booking_bus_des();
     void Admin_login_menu();
@@ -34,6 +38,7 @@ public:
     void User_login_menu();
     void User_login();
     void User_registr();
+    
 };
 
 // declare class object
@@ -217,19 +222,18 @@ void a::User_registr()
     //main();
 }
 
-void a::AddNewBus() // not working for C to continue. if cannot fix, move it back to admin case 1
+void a::AddNewBus() //update 9:54PM // not working for C to continue. if cannot fix, move it back to admin case 1
 {
-    ofstream f1("bus.txt", ios::app);
+    ofstream f1("bus.txt", ios::app); // f1 for write
 
-    for (i = 0; choice != 'f' && choice != 'F'; i++)
+    for (i = 0; choice != 'n' && choice != 'N'; i++)
     {
 
-        if ((choice == 'c') || (choice == 'C') || (choice == '1'))
+        if ((choice == 'y') || (choice == 'Y') || (choice == '1'))
         {
-            cout << "\nEnter The Following Information\n" << endl;
+            cout << "\nEnter The Following Information\n";
             cout << "\tBus ID: ";
             getline(cin, busdata.busid);
-            
             cout << "\tDriver's Name: ";
             getline(cin, busdata.driver);
             cout << "\tArrival Time: ";
@@ -247,7 +251,7 @@ void a::AddNewBus() // not working for C to continue. if cannot fix, move it bac
                << busdata.to << endl;
 
             cout << "Do You Want Enter More Bus's Data?\n";
-            cout << "Press C To Continue Or F To Finish: ";
+            cout << "Press 'Y' To Continue Or 'N' To Finish: ";
             choice = getchar();
             cin.clear();
         }
@@ -261,7 +265,7 @@ void a::AddNewBus() // not working for C to continue. if cannot fix, move it bac
 void a::CheckDataByID()
 {
     string find;
-    ifstream f2("bus.txt");
+    ifstream f2("bus.txt"); // f2 for read
 
     cout << "Enter A Bus's ID: ";
     getline(cin, find);
@@ -305,7 +309,7 @@ void a::CheckDataByID()
 void a::CheckDataByDest()
 {
     string find;
-    ifstream f2("bus.txt");
+    ifstream f2("bus.txt"); // f2 for read
 
     cout << "Enter Your Travel Destination: ";
     getline(cin, find);
@@ -328,7 +332,8 @@ void a::CheckDataByDest()
             cout << "Arrival Time: " << busdata.arrival << endl;
             cout << "Departure Time: " << busdata.departure << endl;
             cout << "From: Phnom Penh" << endl;
-            cout << "To: " << busdata.to << endl;
+            cout << "To: " << busdata.to << endl
+                 << endl;
         }
     }
 
@@ -337,6 +342,201 @@ void a::CheckDataByDest()
         cout << "No Record Found" << endl;
     }
     f2.close();
+
+    cin.clear();
+    cin.ignore(100, '\n');
+    system("pause");
+    system("cls");
+}
+
+string a::CheckForDelete()
+{
+    string find;
+    ifstream f2("bus.txt"); // f2 for read
+
+    cout << "Enter A Bus's ID: ";
+    getline(cin, find);
+    cout << endl;
+
+    for (j = 0; (j < i) || (!f2.eof()); j++)
+    {
+
+        getline(f2, busdata.busid);
+
+        if (busdata.busid == find)
+        {
+            notFound = 1;
+            cout << "Bus ID: " << busdata.busid << endl;
+
+            getline(f2, busdata.driver);
+            cout << "Driver's Name: " << busdata.driver << endl;
+            getline(f2, busdata.arrival);
+            cout << "Arrival Time: " << busdata.arrival << endl;
+            getline(f2, busdata.departure);
+            cout << "Departure Time: " << busdata.departure << endl;
+            cout << "From: Phnom Penh" << endl;
+            getline(f2, busdata.to);
+            cout << "To: " << busdata.to << endl
+                 << endl;
+            return find;
+        }
+    }
+
+    if (notFound == 0)
+    {
+        cout << "No Record Found" << endl;
+    }
+    f2.close();
+
+    cin.clear();
+    cin.ignore(100, '\n');
+    system("pause");
+    system("cls");
+}
+
+void a::DeleteData()
+{
+    string find = CheckForDelete();
+    cout << "\nDo You Want To Delete This Record?\n";
+    cout << "Press 'Y' To Confirm Or 'N' To Cancel: ";
+    cin >> choice;
+
+    if (choice == 'y' || choice == 'Y')
+    {
+        bus busdata;
+        ofstream tempFile;
+        tempFile.open("temp.txt");
+        ifstream f2;
+        f2.open("bus.txt");
+
+        while (!f2.eof())
+        {
+            getline(f2, busdata.busid);
+            f2.ignore();
+            getline(f2, busdata.driver);
+            getline(f2, busdata.arrival);
+            getline(f2, busdata.departure);
+            getline(f2, busdata.to);
+
+            if (busdata.busid != find)
+            {
+                tempFile << "\n"
+                         << busdata.busid;
+                tempFile << "\n"
+                         << busdata.driver;
+                tempFile << "\n"
+                         << busdata.arrival;
+                tempFile << "\n"
+                         << busdata.departure;
+                tempFile << "\n"
+                         << busdata.to;
+            }
+        }
+
+        f2.close();
+        tempFile.close();
+        remove("bus.txt");
+        rename("temp.txt", "bus.txt");
+        cout << "\nData Deleted Successfully\n\n";
+    }
+
+    else if (choice == 'n' || choice == 'N')
+    {
+        cout << "\nRecord Not Deleted\n\n";
+    }
+
+    else
+    {
+        cout << "\nSorry, invalid input.\n\n";
+    }
+
+    cin.clear();
+    cin.ignore(100, '\n');
+    system("pause");
+    system("cls");
+}
+
+void a::UpdateData()
+{
+    string find = CheckForDelete();
+    cout << "\nDo You Want To Update This Record?\n";
+    cout << "Press 'Y' To Confirm Or 'N' To Cancel: ";
+    cin >> choice;
+
+    if (choice == 'y' || choice == 'Y')
+    {
+        bus newdata;
+        cout << "\nEnter The Following Information\n";
+        cout << "\tDriver's Name: ";
+        getline(cin, newdata.driver);
+        cout << "\tArrival Time: ";
+        getline(cin, newdata.arrival);
+        cout << "\tDeparture Time: ";
+        getline(cin, newdata.departure);
+        cout << "\tFrom: Phnom Penh" << endl;
+        cout << "\tTo: ";
+        getline(cin, newdata.to);
+
+        bus busdata;
+        ofstream tempFile;
+        tempFile.open("temp.txt");
+        ifstream f2;
+        f2.open("bus.txt");
+
+        while (!f2.eof())
+        {
+            getline(f2, busdata.busid);
+            f2.ignore();
+            getline(f2, busdata.driver);
+            getline(f2, busdata.arrival);
+            getline(f2, busdata.departure);
+            getline(f2, busdata.to);
+
+            if (busdata.busid != find)
+            {
+                tempFile << "\n"
+                         << busdata.busid;
+                tempFile << "\n"
+                         << busdata.driver;
+                tempFile << "\n"
+                         << busdata.arrival;
+                tempFile << "\n"
+                         << busdata.departure;
+                tempFile << "\n"
+                         << busdata.to;
+            }
+
+            else
+            {
+                tempFile << "\n"
+                         << busdata.busid;
+                tempFile << "\n"
+                         << newdata.driver;
+                tempFile << "\n"
+                         << newdata.arrival;
+                tempFile << "\n"
+                         << newdata.departure;
+                tempFile << "\n"
+                         << newdata.to;
+            }
+        }
+
+        f2.close();
+        tempFile.close();
+        remove("student.txt");
+        rename("temp.txt", "student.txt");
+        cout << "\nData Updated Successfully\n\n";
+    }
+
+    else if (choice == 'n' || choice == 'N')
+    {
+        cout << "\nRecord Not Updated\n\n";
+    }
+
+    else
+    {
+        cout << "\nSorry, invalid input.\n\n";
+    }
 
     cin.clear();
     cin.ignore(100, '\n');

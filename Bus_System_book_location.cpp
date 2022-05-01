@@ -7,9 +7,9 @@ using namespace std;
 int main();
 
 // global variables
-char choice;
+char choice, choiceA, choiceU;
 string validation;
-
+bool stageAdmin, stageUser;
 class a //
 {
     int seat_ava, numseat, totalseat;
@@ -29,7 +29,7 @@ public:
     string CheckForDelete();
     void DeleteData();
     void UpdateData();
-    void 
+    
     void UserSystem();      // for users (costumers)
     void booking_bus_des();
     void Admin_login_menu();
@@ -57,11 +57,12 @@ struct bus // structure to group data types for a new bus
 
 void a::Admin_login_menu()
 {
-    cout << "1. Log in" << endl
-         << "2. Register" << endl;
+    cout << "[1]. Log in as Admin" << endl
+         << "[2]. Register as Admin" << endl
+         << "[B]. Back" << endl;
     cout << "Enter your choice: ";
-    cin >> choice;
-    switch (choice)
+    cin >> choiceA;
+    switch (choiceA)
     {
     case '1':
         Admin_login();
@@ -71,6 +72,11 @@ void a::Admin_login_menu()
         Admin_registr();
         cout << "Please log in" << endl;
         Admin_login();
+        break;
+    case 'B':
+    case 'b':
+        system("clear");
+        main();
         break;
     default:
     {
@@ -108,9 +114,9 @@ void a::Admin_login()
     inputA.close();
     if (stageAdmin == true)
     {
-        cout << "\nLOGIN SUCCESS";
-        cout << "\nHello" << Auser << "\nGlad that you are here!"
-             << "\nWelcome to Bus System" << endl;
+        cout << "\nLOGN SUCCESS...";
+        cout << "\nHello " << Auser << "\nGlad that you are here!"
+             << "\n\n======== Welcome to Bus System for Admin ========" << endl;
         cin.get();
         cin.get();
     }
@@ -140,12 +146,13 @@ void a::Admin_registr()
 
 void a::User_login_menu()
 {
-    cout << "1. Log in as User" << endl
-         << "2. Register as User" << endl;
+    cout << "[1]. Log in as User" << endl
+         << "[2]. Register as User" << endl
+         << "[B]. Back" << endl;
         //add case 3 to go back
     cout << "Enter your choice: ";
-    cin >> choice;
-    switch (choice)
+    cin >> choiceU;
+    switch (choiceU)
     {
     case '1':
         User_login();
@@ -156,6 +163,12 @@ void a::User_login_menu()
         cout << "Please log in" << endl;
         User_login();
         break;
+    case 'B':
+    case 'b':
+        system("clear");
+        main();
+        break;
+
     default:
     {
         cout << "Wrong input" <<endl;
@@ -192,7 +205,7 @@ void a::User_login()
     input.close();
     if (stageUser == true)
     {
-        cout << "\nLOGIN SUCCESS";
+        cout << "\nLOGN SUCCESS...";
         cout << "\nHello" << Uuser << "\nGlad that you are here!"
              << "\nWelcome to Bus System" << endl;
         cin.get();
@@ -302,8 +315,8 @@ void a::CheckDataByID()
 
     cin.clear();
     cin.ignore(100, '\n');
-    system("pause");
-    system("cls");
+    system("read");
+    system("clear");
 }
 
 void a::CheckDataByDest()
@@ -345,8 +358,8 @@ void a::CheckDataByDest()
 
     cin.clear();
     cin.ignore(100, '\n');
-    system("pause");
-    system("cls");
+    system("read");
+    system("clear");
 }
 
 string a::CheckForDelete()
@@ -390,8 +403,8 @@ string a::CheckForDelete()
 
     cin.clear();
     cin.ignore(100, '\n');
-    system("pause");
-    system("cls");
+    system("read");
+    system("clear");
 }
 
 void a::DeleteData()
@@ -452,8 +465,8 @@ void a::DeleteData()
 
     cin.clear();
     cin.ignore(100, '\n');
-    system("pause");
-    system("cls");
+    system("read");
+    system("clear");
 }
 
 void a::UpdateData()
@@ -540,8 +553,8 @@ void a::UpdateData()
 
     cin.clear();
     cin.ignore(100, '\n');
-    system("pause");
-    system("cls");
+    system("read");
+    system("clear");
 }
 
 void a::booking_bus_des()
@@ -627,7 +640,7 @@ void a::booking_bus_des()
                 break;
                 case 'N':
                 case 'n':
-                UserSystem();
+                
                 break;
             }
         }
@@ -669,7 +682,7 @@ void a::AdminSystem()
                 "\t[B] Back To The MAIN MENU\n"
                 "\nYour Choice: ";
         getline(cin, validation); // accept entered input as validation variable
-        system("cls");
+        system("clear");
 
         if (validation.size() == 1) // accept validation with only 1 character
         {
@@ -678,23 +691,20 @@ void a::AdminSystem()
             switch (choice)
             {
             case '1':
-            {
-                aobject.AddNewBus();
-            }
+                AddNewBus();
                 continue;
 
             case '2':
-            {
-                aobject.CheckDataByID();
-            }
+                CheckDataByID();
                 continue;
 
             case '3':
-                cout << "\n\n";
-                cin.clear();
-                cin.ignore(100, '\n');
-                system("pause");
-                break;
+                DeleteData();
+                continue;
+
+            case '4':
+                UpdateData();
+                continue;
 
             case 'B':
             case 'b':
@@ -703,8 +713,8 @@ void a::AdminSystem()
 
             default:
                 cout << "\nSorry, invalid input.\n\n";
-                system("pause");
-                system("cls");
+                system("read");
+                system("clear");
                 break;
             }
         }
@@ -712,8 +722,8 @@ void a::AdminSystem()
         else
         {
             cout << "\nSorry, invalid input.\n\n";
-            system("pause");
-            system("cls");
+            system("read");
+            system("clear");
         }
 
     } while (true);
@@ -728,6 +738,7 @@ void a::UserSystem()
 {
 
     aobject.User_login_menu();
+   
     if (stageUser == true)
     {
     do
@@ -739,7 +750,7 @@ void a::UserSystem()
                 "\t[B] Back To The MAIN MENU\n"
                 "\nYour Choice: ";
         getline(cin, validation); // accept entered input as validation variable
-        system("cls");
+        system("clear");
 
         if (validation.size() == 1) // accept validation with only 1 character
         {
@@ -757,7 +768,7 @@ void a::UserSystem()
                             "\t[B] Back to User System\n"
                             "\nYour Choice: ";
                     getline(cin, validation); // accept entered input as validation variable
-                    system("cls");
+                    system("clear");
 
                     if (validation.size() > 0 && validation.size() < 2) // accept validation with only 1 character
                     {
@@ -783,8 +794,8 @@ void a::UserSystem()
 
                         default:
                             cout << "\nSorry, invalid input.\n\n";
-                            system("pause");
-                            system("cls");
+                            system("read");
+                            system("clear");
                             break;
                         }
                     }
@@ -792,13 +803,13 @@ void a::UserSystem()
                     else
                     {
                         cout << "\nSorry, invalid input.\n\n";
-                        system("pause");
-                        system("cls");
+                        system("read");
+                        system("clear");
                     }
                 }
                 cin.clear();
                 cin.ignore(100, '\n');
-                system("pause");
+                system("read");
                 break;
             }
                 continue;
@@ -817,8 +828,8 @@ void a::UserSystem()
 
             default:
                 cout << "\nSorry, invalid input.\n\n";
-                system("pause");
-                system("cls");
+                system("read");
+                system("clear");
                 break;
             }
         }
@@ -826,8 +837,8 @@ void a::UserSystem()
         else
         {
             std::cout << "\nSorry, invalid input.\n\n";
-            system("pause");
-            system("cls");
+            system("read");
+            system("clear");
         }
     } while (true);
     }   //end of if condition
@@ -843,13 +854,14 @@ int main()
     do
     {
         cout << "\nMAIN MENU\n\n"
-                "\nPlease select your role:\n\n"
+                "\nPlease select your role\n\n"
                 "\t[1] Admin\n"
                 "\t[2] User\n"
                 "\t[E] Exit\n"
-                "\nYour Choice: ";
-        getline(cin, validation); // accept entered input as validation variable
-        system("cls");
+                "\nYour choice: ";
+        cin >> validation;
+        //getline(cin, validation); // accept entered input as validation variable
+        system("clear");
 
         if (validation.size() == 1) // accept validation with only 1 character
         {
@@ -858,17 +870,18 @@ int main()
             switch (choice)
             {
             case '1':
+                
                 aobject.AdminSystem();
-                cin.clear();
-                cin.ignore(100, '\n');
-                system("pause");
+                // cin.clear();
+                // cin.ignore(100, '\n');
+                // system("read");
                 break;
 
             case '2':
                 aobject.UserSystem();
                 cin.clear();
                 cin.ignore(100, '\n');
-                system("pause");
+                system("read");
                 break;
 
             case 'E':
@@ -881,8 +894,8 @@ int main()
 
             default:
                 cout << "\nSorry, invalid input.\n\n";
-                system("pause");
-                system("cls");
+                system("read");
+                system("clear");
                 break;
             }
         }
@@ -890,8 +903,8 @@ int main()
         else
         {
             cout << "\nSorry, invalid input.\n\n";
-            system("pause");
-            system("cls");
+            system("read");
+            system("clear");
         }
 
     } while (true);

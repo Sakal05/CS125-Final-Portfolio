@@ -13,13 +13,12 @@ bool stageAdmin, stageUser;
 class a //
 {
     int seat_ava, numseat, totalseat;
-    int i=0, j;
-    int t, r; //for input temporary data into array processing
-    int notFound = 0;
+    int i, j;
+    int t, r; // for input temporary data into array processing
+    int notFound;
     bool stageAdmin, stageUser, rightbus;
     char choice;
     string tempdata[20];
-
 
 public:
     void AddNewBus();       // add a new bus with its details
@@ -29,8 +28,8 @@ public:
     string CheckForDelete();
     void DeleteData();
     void UpdateData();
-    
-    void UserSystem();      // for users (costumers)
+
+    void UserSystem(); // for users (costumers)
     void booking_bus_des();
     void Admin_login_menu();
     void Admin_login();
@@ -38,7 +37,6 @@ public:
     void User_login_menu();
     void User_login();
     void User_registr();
-    
 };
 
 // declare class object
@@ -57,34 +55,48 @@ struct bus // structure to group data types for a new bus
 
 void a::Admin_login_menu()
 {
+
     cout << "[1]. Log in as Admin" << endl
          << "[2]. Register as Admin" << endl
          << "[B]. Back" << endl;
     cout << "Enter your choice: ";
-    cin >> choiceA;
-    switch (choiceA)
-    {
-    case '1':
-        Admin_login();
-        break;
-        
-    case '2':
-        Admin_registr();
-        cout << "Please log in" << endl;
-        Admin_login();
-        break;
-    case 'B':
-    case 'b':
-        system("clear");
-        main();
-        break;
-    default:
-    {
-        cout << "Wrong input" <<endl;
+    getline(cin, validation); // accept entered input as validation variable
+    system("clear");
 
-        break;
-        
-    }
+    if (validation.size() == 1) // accept validation with only 1 character
+    {
+        choiceA = validation[0]; // let role equal to the inputted validation
+
+        switch (choiceA)
+        {
+        case '1':
+            Admin_login();
+            break;
+
+        case '2':
+            Admin_registr();
+            cout << "Please log in" << endl;
+            Admin_login();
+            break;
+        case 'B':
+        case 'b':
+            system("clear");
+            main();
+            break;
+        default:
+        {
+            cout << "\nSorry, invalid input.\n\n";
+            system("read");
+            system("clear");
+            break;
+        }
+        }
+    } // if condition
+    else
+    {
+        cout << "\nSorry, invalid input.\n\n";
+        system("read");
+        system("clear");
     }
 }
 
@@ -115,15 +127,15 @@ void a::Admin_login()
     if (stageAdmin == true)
     {
         cout << "\nLOGN SUCCESS...";
-        cout << "\nGreeting " << Auser <<endl
+        cout << "\nGreeting " << Auser << endl
              << "\n\n======== Welcome to Bus System for Admin ========" << endl;
         cin.get();
         cin.get();
+        cin.clear();
     }
     else
     {
         cout << "\nLOGIN ERROR.\nPlease check your username and password again\n";
-       
     }
 }
 
@@ -141,7 +153,7 @@ void a::Admin_registr()
     Areg << Areguser << ' ' << Aregpass << endl;
     system("clear");
     cout << "\nRegistration Sucessful\n";
-    //main();
+    // main();
 }
 
 void a::User_login_menu()
@@ -149,33 +161,48 @@ void a::User_login_menu()
     cout << "[1]. Log in as User" << endl
          << "[2]. Register as User" << endl
          << "[B]. Back" << endl;
-        //add case 3 to go back
+    // add case 3 to go back
     cout << "Enter your choice: ";
-    cin >> choiceU;
-    switch (choiceU)
+    getline(cin, validation); // accept entered input as validation variable
+    system("clear");
+
+    if (validation.size() == 1) // accept validation with only 1 character
     {
-    case '1':
-        User_login();
-        break;
-        
-    case '2':
-        User_registr();
-        cout << "Please log in" << endl;
-        User_login();
-        break;
-    case 'B':
-    case 'b':
+        choiceU = validation[0]; // let role equal to the inputted validation
+
+        switch (choiceU)
+        {
+        case '1':
+            User_login();
+            break;
+
+        case '2':
+            User_registr();
+            cout << "Please log in" << endl;
+            User_login();
+            break;
+        case 'B':
+        case 'b':
+            system("clear");
+            main();
+            break;
+
+        default:
+        {
+            cout << "\nSorry, invalid input.\n\n";
+            system("read");
+            system("clear");
+
+            break;
+        }
+        }
+    } // if condition
+
+    else
+    {
+        cout << "\nSorry, invalid input.\n\n";
+        system("read");
         system("clear");
-        main();
-        break;
-
-    default:
-    {
-        cout << "Wrong input" <<endl;
-
-        break;
-        
-    }
     }
 }
 
@@ -206,15 +233,14 @@ void a::User_login()
     if (stageUser == true)
     {
         cout << "\nLOGN SUCCESS...";
-        cout << "\nHello" << Uuser << "\nGlad that you are here!"
-             << "\nWelcome to Bus System" << endl;
+        cout << "\nGreeting " << Uuser << endl
+             << "\n\n======== Welcome to Bus System for User ========" << endl;
         cin.get();
         cin.get();
     }
     else
     {
         cout << "\nLOGIN ERROR.\nPlease check your username and password again\n";
-       
     }
 }
 
@@ -232,10 +258,10 @@ void a::User_registr()
     Ureg << Ureguser << ' ' << Uregpass << endl;
     system("clear");
     cout << "\nRegistration Sucessful\n";
-    //main();
+    // main();
 }
 
-void a::AddNewBus() //update 9:54PM // not working for C to continue. if cannot fix, move it back to admin case 1
+void a::AddNewBus() // update 9:54PM // not working for C to continue. if cannot fix, move it back to admin case 1
 {
     ofstream f1("bus.txt", ios::app); // f1 for write
 
@@ -321,6 +347,7 @@ void a::CheckDataByID()
 
 void a::CheckDataByDest()
 {
+    notFound = 0;
     string find;
     ifstream f2("bus.txt"); // f2 for read
 
@@ -560,104 +587,98 @@ void a::UpdateData()
 void a::booking_bus_des()
 {
     string find, lookforbus;
-    
+
     ifstream f2("bus.txt");
-    cout << "\n\t\t======= Booking ========" <<endl;
+    cout << "\n\t\t======= Booking ========" << endl;
     cout << "\n\nEnter Your Travel Destination: ";
-   
+
     getline(cin, find);
-   
-    
-    //show avaible bus(s)
-    
-    for (j = 0; (j < i) || (!f2.eof()); )
-        {
-            
-            getline(f2, busdata.busid);
-            getline(f2, busdata.driver);
-            getline(f2, busdata.arrival);
-            getline(f2, busdata.departure);
-            getline(f2, busdata.to);
 
-            if (busdata.to == find)
-            {
-                //notFound = 1;
-                
-                cout << "\n --> " << busdata.busid;
-                j++;
-                tempdata[t] = busdata.busid;
-                t++; 
-            }     
-             
-        }   //end of for loop
-    
+    // show avaible bus(s)
 
-  
-    cout <<endl;
-     //book a bus
-    //create an array, take all bus that all that location store in array, compare look for bus to busid found in that array
-    do {
-    cout << "\nChoose which bus you want to book: ";
-    cin >> lookforbus;
-    for (r=0; r<t; r++)
+    for (j = 0; (j < i) || (!f2.eof());)
     {
-        if (tempdata[r] == lookforbus)
-        {
-            rightbus = true;
-            break;
-        }
-        else 
-        {
-            rightbus = false;
-        }
-    }
 
-    if (rightbus == true)
+        getline(f2, busdata.busid);
+        getline(f2, busdata.driver);
+        getline(f2, busdata.arrival);
+        getline(f2, busdata.departure);
+        getline(f2, busdata.to);
+
+        if (busdata.to == find)
+        {
+            // notFound = 1;
+
+            cout << "\n --> " << busdata.busid;
+            j++;
+            tempdata[t] = busdata.busid;
+            t++;
+        }
+
+    } // end of for loop
+
+    cout << endl;
+    // book a bus
+    // create an array, take all bus that all that location store in array, compare look for bus to busid found in that array
+    do
     {
-        int seat;
-        totalseat = (seat=32*j);
-        cout << "\nYour are on the right bus." <<endl;
-        seatava:
-        cout << "\nNumber of seat avaible: " << totalseat << endl;
-        cout << "\nPlease choose number seat you wanna book: ";
-        cin >> numseat;
-
-        if ( numseat > totalseat)
+        cout << "\nChoose which bus you want to book: ";
+        cin >> lookforbus;
+        for (r = 0; r < t; r++)
         {
-            cout << "Sorry, no more seat is available." <<endl;
-        }
-        else 
-        {
-            totalseat -= numseat;
-            cout << "Book Succesfully.";
-            cout << "Choose 'Y' to continue booking, Choose 'N' return to User Menu" << endl; 
-            cin >> choice;
-            switch (choice)
+            if (tempdata[r] == lookforbus)
             {
-                case 'Y':
-                case 'y':
-                goto seatava;
-                break;
-                case 'N':
-                case 'n':
-                
+                rightbus = true;
                 break;
             }
+            else
+            {
+                rightbus = false;
+            }
         }
-    }
 
-    else 
-    {
-        cout << "Your are on the wrong bus." <<endl;
-        
-    }
-    cin.clear();
-       }//end while loop
+        if (rightbus == true)
+        {
+            int seat;
+            totalseat = (seat = 32 * j);
+            cout << "\nYour are on the right bus." << endl;
+        seatava:
+            cout << "\nNumber of seat avaible: " << totalseat << endl;
+            cout << "\nPlease choose number seat you wanna book: ";
+            cin >> numseat;
+
+            if (numseat > totalseat)
+            {
+                cout << "Sorry, no more seat is available." << endl;
+            }
+            else
+            {
+                totalseat -= numseat;
+                cout << "Book Succesfully.";
+                cout << "Choose 'Y' to continue booking, Choose 'N' return to User Menu" << endl;
+                cin >> choice;
+                switch (choice)
+                {
+                case 'Y':
+                case 'y':
+                    goto seatava;
+                    break;
+                case 'N':
+                case 'n':
+
+                    break;
+                }
+            }
+        }
+
+        else
+        {
+            cout << "Your are on the wrong bus." << endl;
+        }
+        cin.clear();
+    } // end while loop
     while (true);
 
-       
-
-    
     f2.close();
 
     cin.clear();
@@ -672,182 +693,182 @@ void a::AdminSystem()
     if (stageAdmin == true)
 
     {
-    do
-    {
-        cout << "\nAdmin System:\n\n"
-                "\t[1] Add A New Bus's Data\n"
-                "\t[2] Check Database\n"
-                "\t[3] Update Database\n"
-                "\t[4] Delete Database\n"
-                "\t[B] Back To The MAIN MENU\n"
-                "\nYour Choice: ";
-        getline(cin, validation); // accept entered input as validation variable
-        system("clear");
-
-        if (validation.size() == 1) // accept validation with only 1 character
+        do
         {
-            choice = validation[0]; // let role equal to the inputted validation
+            cout << "\nAdmin System:\n\n"
+                    "\t[1] Add A New Bus's Data\n"
+                    "\t[2] Check Database\n"
+                    "\t[3] Update Database\n"
+                    "\t[4] Delete Database\n"
+                    "\t[B] Back To The MAIN MENU\n"
+                    "\nYour Choice: ";
+            getline(cin, validation); // accept entered input as validation variable
+            system("clear");
 
-            switch (choice)
+            if (validation.size() == 1) // accept validation with only 1 character
             {
-            case '1':
-                AddNewBus();
-                continue;
+                choice = validation[0]; // let role equal to the inputted validation
 
-            case '2':
-                CheckDataByID();
-                continue;
+                switch (choice)
+                {
+                case '1':
+                    AddNewBus();
+                    continue;
 
-            case '3':
-                DeleteData();
-                continue;
+                case '2':
+                    CheckDataByID();
+                    continue;
 
-            case '4':
-                UpdateData();
-                continue;
+                case '3':
+                    DeleteData();
+                    continue;
 
-            case 'B':
-            case 'b':
-                main();
-                break;
+                case '4':
+                    UpdateData();
+                    continue;
 
-            default:
+                case 'B':
+                case 'b':
+                    main();
+                    break;
+
+                default:
+                    cout << "\nSorry, invalid input.\n\n";
+                    system("read");
+                    system("clear");
+                    break;
+                }
+            }
+
+            else
+            {
                 cout << "\nSorry, invalid input.\n\n";
                 system("read");
                 system("clear");
-                break;
             }
-        }
 
-        else
-        {
-            cout << "\nSorry, invalid input.\n\n";
-            system("read");
-            system("clear");
-        }
+        } while (true);
+    } // end of if condition
 
-    } while (true);
-    } //end of if condition
-
-    else {
+    else
+    {
         AdminSystem();
     }
-}   //end of funciton
+} // end of funciton
 
 void a::UserSystem()
 {
 
     aobject.User_login_menu();
-   
+
     if (stageUser == true)
     {
-    do
-    {   
-        
-        cout << "\nUser System:\n\n"
-                "\t[1] Search For Available Buses\n"
-                "\t[2] Book A Bus\n"
-                "\t[B] Back To The MAIN MENU\n"
-                "\nYour Choice: ";
-        getline(cin, validation); // accept entered input as validation variable
-        system("clear");
-
-        if (validation.size() == 1) // accept validation with only 1 character
+        do
         {
-            choiceU = validation[0]; // let role equal to the inputted validation
 
-            switch (choiceU)
+            cout << "\nUser System:\n\n"
+                    "\t[1] Search For Available Buses\n"
+                    "\t[2] Book A Bus\n"
+                    "\t[B] Back To The MAIN MENU\n"
+                    "\nYour Choice: ";
+            getline(cin, validation); // accept entered input as validation variable
+            system("clear");
+
+            if (validation.size() == 1) // accept validation with only 1 character
             {
-            case '1':
-            {
-                while (true)
+                choiceU = validation[0]; // let role equal to the inputted validation
+
+                switch (choiceU)
                 {
-                    cout << "\nSelect Your Searching Method:\n"
-                            "\t[1] By Bus ID\n"
-                            "\t[2] By Your Destination\n"
-                            "\t[B] Back to User System\n"
-                            "\nYour Choice: ";
-                    getline(cin, validation); // accept entered input as validation variable
-                    system("clear");
-
-                    if (validation.size() > 0 && validation.size() < 2) // accept validation with only 1 character
+                case '1':
+                {
+                    while (true)
                     {
-                        choiceU = validation[0]; // let role equal to the inputted validation
+                        cout << "\nSelect Your Searching Method:\n"
+                                "\t[1] By Bus ID\n"
+                                "\t[2] By Your Destination\n"
+                                "\t[B] Back to User System\n"
+                                "\nYour Choice: ";
+                        getline(cin, validation); // accept entered input as validation variable
+                        system("clear");
 
-                        switch (choiceU)
+                        if (validation.size() > 0 && validation.size() < 2) // accept validation with only 1 character
                         {
-                        case '1':
-                        {
-                            aobject.CheckDataByID();
+                            choiceU = validation[0]; // let role equal to the inputted validation
+
+                            switch (choiceU)
+                            {
+                            case '1':
+                            {
+                                aobject.CheckDataByID();
+                            }
+                                continue;
+
+                            case '2':
+                            {
+                                aobject.CheckDataByDest();
+                            }
+                                continue;
+
+                            case 'B': // not working. if cannot fix, remove case 'b' & 'B'
+                            case 'b':
+                                break;
+
+                            default:
+                                cout << "\nSorry, invalid input.\n\n";
+                                system("read");
+                                system("clear");
+                                break;
+                            }
                         }
-                            continue;
 
-                        case '2':
+                        else
                         {
-                            aobject.CheckDataByDest();
-                        }
-                            continue;
-
-                        case 'B': // not working. if cannot fix, remove case 'b' & 'B'
-                        case 'b':
-                            break;
-
-                        default:
                             cout << "\nSorry, invalid input.\n\n";
                             system("read");
                             system("clear");
-                            break;
                         }
                     }
-
-                    else
-                    {
-                        cout << "\nSorry, invalid input.\n\n";
-                        system("read");
-                        system("clear");
-                    }
+                    cin.clear();
+                    cin.ignore(100, '\n');
+                    system("read");
+                    break;
                 }
-                cin.clear();
-                cin.ignore(100, '\n');
-                system("read");
-                break;
+                    continue;
+
+                case '2':
+                    booking_bus_des();
+                    cin.clear();
+                    cin.ignore(100, '\n');
+                    system("read");
+                    break;
+
+                case 'b':
+                case 'B':
+                    main();
+                    break;
+
+                default:
+                    cout << "\nSorry, invalid input.\n\n";
+                    system("read");
+                    system("clear");
+                    break;
+                }
             }
-                continue;
 
-            case '2':
-                booking_bus_des();
-                cin.clear();
-                cin.ignore(100, '\n');
-                system("read");
-                break;
-
-            case 'b':
-            case 'B':
-                main();
-                break;
-
-            default:
-                cout << "\nSorry, invalid input.\n\n";
+            else
+            {
+                std::cout << "\nSorry, invalid input.\n\n";
                 system("read");
                 system("clear");
-                break;
             }
-        }
-
-        else
-        {
-            std::cout << "\nSorry, invalid input.\n\n";
-            system("read");
-            system("clear");
-        }
-    } while (true);
-    }   //end of if condition
-    else{
+        } while (true);
+    } // end of if condition
+    else
+    {
         UserSystem();
     }
-}   //end of usersystem function
-
-
+} // end of usersystem function
 
 int main()
 {
@@ -861,8 +882,8 @@ int main()
                 "\t[2] User\n"
                 "\t[E] Exit\n"
                 "\nYour choice: ";
-        cin >> validation;
-        //getline(cin, validation); // accept entered input as validation variable
+
+        getline(cin, validation); // accept entered input as validation variable
         system("clear");
 
         if (validation.size() == 1) // accept validation with only 1 character
@@ -872,7 +893,7 @@ int main()
             switch (choice)
             {
             case '1':
-                
+
                 aobject.AdminSystem();
                 // cin.clear();
                 // cin.ignore(100, '\n');

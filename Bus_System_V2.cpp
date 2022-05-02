@@ -9,7 +9,7 @@ int main();
 // global variables
 char choice, choiceA, choiceU;
 string validation;
-bool stageAdmin, stageUser;
+//bool stageAdmin, stageUser;
 class a //
 {
     int seat_ava, numseat, totalseat;
@@ -88,6 +88,7 @@ void a::Admin_login_menu()
             cout << "\nSorry, invalid input.\n\n";
             system("read");
             system("clear");
+            Admin_login_menu();
             break;
         }
         }
@@ -97,6 +98,7 @@ void a::Admin_login_menu()
         cout << "\nSorry, invalid input.\n\n";
         system("read");
         system("clear");
+        Admin_login_menu();
     }
 }
 
@@ -104,13 +106,14 @@ void a::Admin_login_menu()
 void a::Admin_login()
 {
     int count;
-
+    char choiceL;
+    bool stageAdmin = false;
     string Auser, Apass, Au, Ap;
     // system("clear");
     cout << "\n\nPlease enter the following details" << endl;
-    cout << "\nUSERNAME :";
+    cout << "\nUSERNAME : ";
     cin >> Auser;
-    cout << "\nPASSWORD :";
+    cout << "\nPASSWORD : ";
     cin >> Apass;
 
     ifstream inputA("Admin_registration_account.txt");
@@ -131,13 +134,40 @@ void a::Admin_login()
              << "\n\n======== Welcome to Bus System for Admin ========" << endl;
         cin.get();
         cin.get();
-        cin.clear();
-    }
+        AdminSystem();
+    }   //if condition
     else
     {
-        cout << "\nLOGIN ERROR.\nPlease check your username and password again\n";
-    }
-}
+        cout << "\nLOGIN ERROR.\nPlease check your username and password again\n" <<endl;
+        cout << "\nEnter 'Y' to login again, 'N' to go back to main menu" << endl;;
+        cin >> choiceL;
+        switch (choiceL)
+        {
+            case 'Y':
+            case 'y':
+            
+            system("clear");
+            Admin_login();
+            break;
+
+            case 'N':
+            case 'n':
+            
+            system("clear");
+            
+            cin.clear();
+            cin.ignore(10000,'\n');
+            Admin_login_menu();
+            break;
+
+            default:
+            {
+                cout << "Wrong input.";
+                break;
+            }      
+        }   //end of switch
+    }   //else condition   
+}   //end of function
 
 void a::Admin_registr()
 {
@@ -158,11 +188,14 @@ void a::Admin_registr()
 
 void a::User_login_menu()
 {
+    
     cout << "[1]. Log in as User" << endl
          << "[2]. Register as User" << endl
          << "[B]. Back" << endl;
     // add case 3 to go back
     cout << "Enter your choice: ";
+    
+    // cin >> test;
     getline(cin, validation); // accept entered input as validation variable
     system("clear");
 
@@ -197,26 +230,26 @@ void a::User_login_menu()
         }
         }
     } // if condition
-
     else
     {
         cout << "\nSorry, invalid input.\n\n";
         system("read");
         system("clear");
+        User_login_menu();
     }
 }
 
 // User Log in and Registration
-void a::User_login()
+void a::User_login()            
 {
     int count;
-
+    bool stageUser = false;
     string Uuser, Upass, Uu, Up;
     // system("clear");
     cout << "Please enter the following details" << endl;
-    cout << "USERNAME :";
+    cout << "USERNAME : ";
     cin >> Uuser;
-    cout << "PASSWORD :";
+    cout << "PASSWORD : ";
     cin >> Upass;
 
     ifstream input("User_registration.txt");
@@ -232,16 +265,44 @@ void a::User_login()
     input.close();
     if (stageUser == true)
     {
-        cout << "\nLOGN SUCCESS...";
+        cout << "\nLOGN SUCCESS..." <<endl;
         cout << "\nGreeting " << Uuser << endl
              << "\n\n======== Welcome to Bus System for User ========" << endl;
         cin.get();
         cin.get();
+        UserSystem();
     }
     else
     {
-        cout << "\nLOGIN ERROR.\nPlease check your username and password again\n";
-    }
+        cout << "\nLOGIN ERROR.\n\nPlease check your username and password again!!\n";
+        cout << "\nEnter 'Y' to login again, 'N' to go back to main menu" << endl;;
+        cin >> choice;
+        switch (choice)
+        {
+            case 'Y':
+            case 'y':
+            
+            system("clear");
+            User_login();
+            break;
+
+            case 'N':
+            case 'n':
+            // system("clear");
+            system("clear");
+            cin.clear();
+            cin.ignore(10000,'\n');
+            User_login_menu();
+            
+            break;
+
+            default:
+            {
+                cout << "Wrong input.";
+                break;
+            }      
+        }   //end of switch
+    }   //else statement
 }
 
 void a::User_registr()
@@ -265,14 +326,16 @@ void a::AddNewBus() // update 9:54PM // not working for C to continue. if cannot
 {
     ofstream f1("bus.txt", ios::app); // f1 for write
 
-    for (i = 0; choice != 'n' && choice != 'N'; i++)
+    for (i = 0; choiceA != 'n' && choiceA != 'N'; i++)
     {
 
-        if ((choice == 'y') || (choice == 'Y') || (choice == '1'))
+        if ((choiceA == 'y') || (choiceA == 'Y') || (choiceA == '1'))
         {
             cout << "\nEnter The Following Information\n";
+            cin.ignore();
             cout << "\tBus ID: ";
             getline(cin, busdata.busid);
+            
             cout << "\tDriver's Name: ";
             getline(cin, busdata.driver);
             cout << "\tArrival Time: ";
@@ -291,8 +354,9 @@ void a::AddNewBus() // update 9:54PM // not working for C to continue. if cannot
 
             cout << "Do You Want Enter More Bus's Data?\n";
             cout << "Press 'Y' To Continue Or 'N' To Finish: ";
-            choice = getchar();
+            choiceA = getchar();
             cin.clear();
+            // cin.ignore();
         }
     }
     f1.close();
@@ -689,10 +753,10 @@ void a::booking_bus_des()
 
 void a::AdminSystem()
 {
-    aobject.Admin_login_menu();
-    if (stageAdmin == true)
+    //aobject.Admin_login_menu();
+    // if (stageAdmin == true)
 
-    {
+    // {
         do
         {
             cout << "\nAdmin System:\n\n"
@@ -707,13 +771,13 @@ void a::AdminSystem()
 
             if (validation.size() == 1) // accept validation with only 1 character
             {
-                choice = validation[0]; // let role equal to the inputted validation
+                choiceA = validation[0]; // let role equal to the inputted validation
 
-                switch (choice)
+                switch (choiceA)
                 {
                 case '1':
                     AddNewBus();
-                    continue;
+                    break;
 
                 case '2':
                     CheckDataByID();
@@ -748,21 +812,17 @@ void a::AdminSystem()
             }
 
         } while (true);
-    } // end of if condition
+    // } // end of if condition
 
-    else
-    {
-        AdminSystem();
-    }
+    // else
+    // {
+    //     AdminSystem();
+    // }
 } // end of funciton
 
 void a::UserSystem()
 {
 
-    aobject.User_login_menu();
-
-    if (stageUser == true)
-    {
         do
         {
 
@@ -863,11 +923,9 @@ void a::UserSystem()
                 system("clear");
             }
         } while (true);
-    } // end of if condition
-    else
-    {
-        UserSystem();
-    }
+
+    
+    
 } // end of usersystem function
 
 int main()
@@ -894,17 +952,17 @@ int main()
             {
             case '1':
 
-                aobject.AdminSystem();
+                aobject.Admin_login_menu();
                 // cin.clear();
                 // cin.ignore(100, '\n');
                 // system("read");
                 break;
 
             case '2':
-                aobject.UserSystem();
-                cin.clear();
-                cin.ignore(100, '\n');
-                system("read");
+                aobject.User_login_menu();
+                // cin.clear();
+                // cin.ignore(100, '\n');
+                // system("read");
                 break;
 
             case 'E':

@@ -462,7 +462,7 @@ void a::CheckDataByDest()
 string a::CheckForDelete()
 {
     string find;
-    ifstream f2("bus.txt"); // f2 for read
+    ifstream f2("bus.txt"); // ifstream f2 for read
 
     cout << "Enter A Bus's ID: ";
     getline(cin, find);
